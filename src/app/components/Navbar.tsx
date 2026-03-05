@@ -18,7 +18,7 @@ const Navbar = () => {
         {/* Simple Navigation Links */}
         <div className="hidden md:flex gap-6 text-sm font-medium text-slate-400">
           <a href="#" className="hover:text-white transition-colors">Home</a>
-          <a href="https://github.com" target="_blank" className="hover:text-white transition-colors">Github</a>
+          <a href="https://github.com/gauarvkumar09-bit" target="_blank" className="hover:text-white transition-colors">Github</a>
         </div>
       </div>
     </nav>
