@@ -1,21 +1,20 @@
 "use client";
 import React from 'react';
 
-// TypeScript Interface to define props structure [cite: 38, 39]
+// Defining types for props to satisfy TypeScript compiler [cite: 38, 39]
 interface AIInsightProps {
   summary: string;
-  sentiment: 'Positive' | 'Mixed' | 'Negative' | string;
+  sentiment: string; 
 }
 
 export default function AIInsight({ summary, sentiment }: AIInsightProps) {
-  // Tailwind colors based on sentiment classification [cite: 22, 31]
+  // Using a Record type for colors to prevent indexing errors
   const colors: Record<string, string> = {
     Positive: "bg-green-500/20 text-green-400 border-green-500/50",
     Mixed: "bg-yellow-500/20 text-yellow-400 border-yellow-500/50",
     Negative: "bg-red-500/20 text-red-400 border-red-500/50"
   };
 
-  // Fallback color logic
   const activeColor = colors[sentiment] || "bg-slate-500/20 text-slate-400 border-slate-500/50";
 
   return (
