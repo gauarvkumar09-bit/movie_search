@@ -3,14 +3,29 @@ import { useState } from 'react';
 import MovieCard from './components/MovieCard';
 import AIInsight from './components/AIInsight';
 
+// 1. Data ka structure define karo [cite: 17-22]
+interface MovieResult {
+  Response: string;
+  Title: string;
+  Poster: string;
+  Year: string;
+  Genre: string;
+  imdbRating: string;
+  Actors: string;
+  Plot: string;
+  aiSummary: string;
+  sentimentClass: 'Positive' | 'Mixed' | 'Negative' | string;
+  Error?: string;
+}
+
 export default function MovieSearch() {
   const [imdbId, setImdbId] = useState('');
-  const [data, setData] = useState(null);
+  // 2. State ko ye interface assign karo
+  const [data, setData] = useState<MovieResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const fetchData = async () => {
-    // Basic Validation: Ensure field is filled 
     if (!imdbId.trim()) {
       setError("Please enter an IMDb ID first!");
       return;
@@ -24,7 +39,6 @@ export default function MovieSearch() {
       const res = await fetch(`/api/movie?id=${imdbId}`);
       const json = await res.json();
 
-      // Graceful Error Handling [cite: 30, 83]
       if (!res.ok) {
         setError(json.error || "Failed to fetch movie details.");
       } else {
@@ -39,11 +53,10 @@ export default function MovieSearch() {
 
   return (
     <main className="min-h-screen bg-[#020617] text-white p-10">
-      {/* Search Input Section [cite: 24] */}
       <div className="max-w-xl mx-auto mb-10 flex flex-col gap-4">
         <div className="flex gap-2">
           <input 
-            className="flex-1 bg-slate-900 border border-slate-700 p-4 rounded-xl outline-none focus:border-indigo-500 transition-all"
+            className="flex-1 bg-slate-900 border border-slate-700 p-4 rounded-xl outline-none focus:border-indigo-500"
             placeholder="Enter IMDb ID (e.g. tt0133093)"
             value={imdbId}
             onChange={(e) => setImdbId(e.target.value)}
@@ -56,8 +69,6 @@ export default function MovieSearch() {
             {loading ? "Searching..." : "Search"}
           </button>
         </div>
-        
-        {/* Error Message Display  */}
         {error && (
           <div className="bg-red-500/10 border border-red-500/50 text-red-400 p-3 rounded-lg text-sm text-center">
             {error}
@@ -65,15 +76,14 @@ export default function MovieSearch() {
         )}
       </div>
 
-      {/* Movie Details Display [cite: 16-22, 27] */}
+      {/* 3. Ab TypeScript error nahi dega [cite: 69] */}
       {data && data.Response === "True" && (
-        <div className="max-w-4xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className="max-w-4xl mx-auto">
           <MovieCard data={data} />
           <AIInsight summary={data.aiSummary} sentiment={data.sentimentClass} />
         </div>
       )}
 
-      {/* Loading Skeleton Placeholder */}
       {loading && (
         <div className="max-w-4xl mx-auto h-64 bg-slate-900/50 animate-pulse rounded-3xl border border-slate-800 flex items-center justify-center">
           <p className="text-slate-500">Analyzing movie data...</p>
