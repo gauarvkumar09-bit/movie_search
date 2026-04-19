@@ -10,7 +10,7 @@ export async function GET(request) {
 
   try {
 
-const apiKey = process.env.NEXT_PUBLIC_API_KEY || "64a1c176"; 
+const apiKey = process.env.NEXT_PUBLIC_API_KEY ; 
 // Agar env se nahi mila, toh ye hard-coded key use karega.
     const url = `https://www.omdbapi.com/?i=${id}&apikey=${apiKey}`;
     
